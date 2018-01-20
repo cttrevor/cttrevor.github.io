@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Trevor</title>
+  <icon>https://www.gravatar.com/avatar/2a0b4946c9bb4b2d89e59c5aa8263ade</icon>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://cttrevor.github.io/"/>
+  <updated>2018-01-20T05:49:02.588Z</updated>
+  <id>https://cttrevor.github.io/</id>
+  
+  <author>
+    <name>Trevor Cui</name>
+    <email>ct1993@126.com</email>
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>子数组和的一系列问题</title>
+    <link href="https://cttrevor.github.io/2018/01/20/subarray-sum/"/>
+    <id>https://cttrevor.github.io/2018/01/20/subarray-sum/</id>
+    <published>2018-01-20T06:10:39.219Z</published>
+    <updated>2018-01-20T05:49:02.588Z</updated>
+    
+    <content type="html"><![CDATA[<p>关于子数组的和有一系列问题，思路都比较类似</p><h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><p>Node.js 的安装网上有很多的教程，对于一个前端程序员来说，Node 也是一个经常会接触到的东西，这里就暂且不表。我们的安装过程从安装 Hexo 开始。</p><p>打开终端，用<code>npm install</code>安装 Hexo ：</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-cli -g</span><br></pre></td></tr></table></figure><h3 id="在本地创建一个博客站"><a href="#在本地创建一个博客站" class="headerlink" title="在本地创建一个博客站"></a>在本地创建一个博客站</h3><p>在准备创建文件夹的位置打开终端：</p><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">$ hexo init blog</span><br><span class="line">$ cd blog</span><br><span class="line">$ npm install</span><br><span class="line">$ hexo s</span><br></pre></td></tr></table></figure><p>至此，Hexo博客在本地安装完毕，浏览器输入<code>http://localhost:4000</code>，即可在本地运行。若无法运行，可能是<code>4000</code>端口被占用，可用 <code>hexo s -p 4001</code> 指定端口号，其中 <code>4001</code> 自定。也可修改 <code>node_modules\hexo-server\index.js</code> 中默认的 <code>port</code> 值解决。</p><h3 id="在Github上托管博客"><a href="#在Github上托管博客" class="headerlink" title="在Github上托管博客"></a>在Github上托管博客</h3><p>在 Github 上建立与你用户名对应的仓库，仓库名必须为 <code>username.github.io</code></p><p>配置 Hexo 文件夹的 <code>_config.yml</code> 文件，翻到最下面，改成：</p><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">    repository:</span> <span class="attr">https://github.com/abc/abc.github.io.git</span></span><br><span class="line"><span class="attr">    branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure><p>注意 <code>yml</code> 配置文件冒号后面有空格。</p><p>然后在终端上输入以下指令部署到 <code>Github</code> 上：</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure><p>若出现报错：<code>ERROR Deployer not found：git</code> 在终端上运行：</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git –save</span><br></pre></td></tr></table></figure><h3 id="生成新的文章"><a href="#生成新的文章" class="headerlink" title="生成新的文章"></a>生成新的文章</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new [layout] &lt;title&gt;</span><br></pre></td></tr></table></figure><p>您可以在命令中指定文章的布局（layout），默认为 <code>post</code>，可以通过修改 <code>_config.yml</code> 中的 <code>default_layout</code> 参数来指定默认布局。</p><table><thead><tr><th>布局</th><th>路径</th></tr></thead><tbody><tr><td><code>post</code></td><td><code>source/_post</code></td></tr><tr><td><code>page</code></td><td><code>source</code></td></tr><tr><td><code>draft</code></td><td><code>source/_drafts</code></td></tr></tbody></table><h3 id="更改博客主题"><a href="#更改博客主题" class="headerlink" title="更改博客主题"></a>更改博客主题</h3><p>博客主题保存在 <code>themes</code> 文件夹下，初始创建时 Hexo 为我们创建了一个默认的主题 <code>landscape</code> 。</p><p>博客主题可以在 Github 和 <a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes</a> 上搜寻。本站主题地址<a href="https://github.com/haojen/hexo-theme-Anisina" target="_blank" rel="noopener">点击此处</a>。</p><p>修改 <code>_config.yml</code> 中的 <code>theme</code> 来指定博客主题。</p><h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>在 <code>_config.yml</code> 包括对应主题的文件夹下的 <code>_config.yml</code> 中还有很多的配置项，具体配置说明参照<a href="https://hexo.io/zh-cn/docs/configuration.html" target="_blank" rel="noopener">Hexo官方配置文档</a>以及主题 Github 的说明。</p><p>其他文档参照<a href="https://hexo.io/zh-cn/api/index.html" target="_blank" rel="noopener">Hexo官方API</a>。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;关于子数组的和有一系列问题，思路都比较类似&lt;/p&gt;
+&lt;h2 id=&quot;起步&quot;&gt;&lt;a href=&quot;#起步&quot; class=&quot;headerlink&quot; title=&quot;起步&quot;&gt;&lt;/a&gt;起步&lt;/h2&gt;&lt;h3 id=&quot;安装Hexo&quot;&gt;&lt;a href=&quot;#安装Hexo&quot; class=&quot;hea
+      
+    
+    </summary>
+    
+      <category term="Algorithm" scheme="https://cttrevor.github.io/categories/Algorithm/"/>
+    
+    
+      <category term="Array" scheme="https://cttrevor.github.io/tags/Array/"/>
+    
+      <category term="LeetCode" scheme="https://cttrevor.github.io/tags/LeetCode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://cttrevor.github.io/2018/01/08/hello-world/"/>
+    <id>https://cttrevor.github.io/2018/01/08/hello-world/</id>
+    <published>2018-01-08T14:33:25.771Z</published>
+    <updated>2018-01-20T05:55:17.993Z</updated>
+    
+    <content type="html"><![CDATA[<p>其实一直都有想做一个博客的想法，一方面为了记录我的技术成长，另一方面来说，如果能有更多的人关注的话，也可以交流一下，共同成长。Hexo 是一个关注了很久的一个快速简洁的博客框架。作为第一篇博客，还是按照很多 Hexo 博主的惯例，写一写 Hexo 的 Hello World。</p><h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><p>Node.js 的安装网上有很多的教程，对于一个前端程序员来说，Node 也是一个经常会接触到的东西，这里就暂且不表。我们的安装过程从安装 Hexo 开始。</p><p>打开终端，用<code>npm install</code>安装 Hexo ：</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-cli -g</span><br></pre></td></tr></table></figure><h3 id="在本地创建一个博客站"><a href="#在本地创建一个博客站" class="headerlink" title="在本地创建一个博客站"></a>在本地创建一个博客站</h3><p>在准备创建文件夹的位置打开终端：</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo init blog</span><br><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ npm install</span><br><span class="line">$ hexo s</span><br></pre></td></tr></table></figure><p>至此，Hexo博客在本地安装完毕，浏览器输入<code>http://localhost:4000</code>，即可在本地运行。若无法运行，可能是<code>4000</code>端口被占用，可用 <code>hexo s -p 4001</code> 指定端口号，其中 <code>4001</code> 自定。也可修改 <code>node_modules\hexo-server\index.js</code> 中默认的 <code>port</code> 值解决。</p><h3 id="在Github上托管博客"><a href="#在Github上托管博客" class="headerlink" title="在Github上托管博客"></a>在Github上托管博客</h3><p>在 Github 上建立与你用户名对应的仓库，仓库名必须为 <code>username.github.io</code></p><p>配置 Hexo 文件夹的 <code>_config.yml</code> 文件，翻到最下面，改成：</p><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">    repository:</span> <span class="attr">https://github.com/abc/abc.github.io.git</span></span><br><span class="line"><span class="attr">    branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure><p>注意 <code>yml</code> 配置文件冒号后面有空格。</p><p>然后在终端上输入以下指令部署到 <code>Github</code> 上：</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure><p>若出现报错：<code>ERROR Deployer not found：git</code> 在终端上运行：</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git –save</span><br></pre></td></tr></table></figure><h3 id="生成新的文章"><a href="#生成新的文章" class="headerlink" title="生成新的文章"></a>生成新的文章</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new [layout] &lt;title&gt;</span><br></pre></td></tr></table></figure><p>您可以在命令中指定文章的布局（layout），默认为 <code>post</code>，可以通过修改 <code>_config.yml</code> 中的 <code>default_layout</code> 参数来指定默认布局。</p><table><thead><tr><th>布局</th><th>路径</th></tr></thead><tbody><tr><td><code>post</code></td><td><code>source/_post</code></td></tr><tr><td><code>page</code></td><td><code>source</code></td></tr><tr><td><code>draft</code></td><td><code>source/_drafts</code></td></tr></tbody></table><h3 id="更改博客主题"><a href="#更改博客主题" class="headerlink" title="更改博客主题"></a>更改博客主题</h3><p>博客主题保存在 <code>themes</code> 文件夹下，初始创建时 Hexo 为我们创建了一个默认的主题 <code>landscape</code> 。</p><p>博客主题可以在 Github 和 <a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes</a> 上搜寻。本站主题地址<a href="https://github.com/haojen/hexo-theme-Anisina" target="_blank" rel="noopener">点击此处</a>。</p><p>修改 <code>_config.yml</code> 中的 <code>theme</code> 来指定博客主题。</p><h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>在 <code>_config.yml</code> 包括对应主题的文件夹下的 <code>_config.yml</code> 中还有很多的配置项，具体配置说明参照<a href="https://hexo.io/zh-cn/docs/configuration.html" target="_blank" rel="noopener">Hexo官方配置文档</a>以及主题 Github 的说明。</p><p>其他文档参照<a href="https://hexo.io/zh-cn/api/index.html" target="_blank" rel="noopener">Hexo官方API</a>。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;其实一直都有想做一个博客的想法，一方面为了记录我的技术成长，另一方面来说，如果能有更多的人关注的话，也可以交流一下，共同成长。Hexo 是一个关注了很久的一个快速简洁的博客框架。作为第一篇博客，还是按照很多 Hexo 博主的惯例，写一写 Hexo 的 Hello World
+      
+    
+    </summary>
+    
+      <category term="Others" scheme="https://cttrevor.github.io/categories/Others/"/>
+    
+    
+      <category term="Hexo" scheme="https://cttrevor.github.io/tags/Hexo/"/>
+    
+  </entry>
+  
+</feed>
