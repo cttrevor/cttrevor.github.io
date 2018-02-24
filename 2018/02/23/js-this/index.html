@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="崔彤的个人博客">
+    <meta name="keyword" content="">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="Trevor" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        this相关｜Trevor&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://cttrevor.github.io/2018/02/23/js-this/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('//o7bkkhiex.bkt.clouddn.com/lion-blur-bg.jpg')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    Trevor
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/archives/">archives</a>
+                        </li>
+							
+						
+                    
+                        
+							
+                        <li>
+                            <a href="/categories/">categories</a>
+                        </li>
+							
+						
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">tags</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="http://m.qpic.cn/psb?/39bf0e7a-4728-4839-9dd6-65fdfc577179/hvr2xUgyxS*xDi3tWBHbqBWGxtWRESQYe1H6ZYhc3kw!/b/dGgBAAAAAAAA&bo=IAMgAyADIAMRGS4!&rf=viewer_4">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('http://m.qpic.cn/psb?/39bf0e7a-4728-4839-9dd6-65fdfc577179/hvr2xUgyxS*xDi3tWBHbqBWGxtWRESQYe1H6ZYhc3kw!/b/dGgBAAAAAAAA&bo=IAMgAyADIAMRGS4!&rf=viewer_4')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>this相关</h1>
+                    
+                    <h2 class="subheading">JavaScript基础知识系列</h2>
+                    
+                    <span class="meta">
+                         作者 Trevor Cui
+                        <span>
+                          日期 2018-02-23
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#JavaScript"
+                           title="JavaScript">JavaScript</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            this相关
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>参考自：<a href="http://www.cnblogs.com/wangfupeng1988/p/3988422.html" target="_blank" rel="noopener">深入理解javascript原型和闭包（10）——this（王福朋 - 博客园）</a>。如有侵权，请联系删除。</p>
+<p>在具体了解 this 之前，先强调一个非常重要的知识点：在函数中 this 到底取何值，是在函数真正被调用执行的时候确定的，函数定义的时候确定不了。因为 ==this 的取值是执行上下文环境的一部分==，每次调用函数，都会产生一个新的执行上下文环境。</p>
+<p>this的取值，分四种情况。我们来挨个看一下。</p>
+<h2 id="情况1：构造函数"><a href="#情况1：构造函数" class="headerlink" title="情况1：构造函数"></a>情况1：构造函数</h2><p>所谓构造函数就是用来 new 对象的函数。其实严格来说，所有的函数都可以 new 一个对象，但是有些函数的定义是为了 new 一个对象，而有些函数则不是。另外注意，构造函数的函数名第一个字母大写（规则约定）。例如：Object、Array、Function 等。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = <span class="string">"aa"</span>;</span><br><span class="line">  <span class="keyword">this</span>.year = <span class="number">2018</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);   <span class="comment">// Foo &#123;name: "aa", yaer: 2018&#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> f1 = <span class="keyword">new</span> Foo();</span><br><span class="line"><span class="built_in">console</span>.log(f1.name);  <span class="comment">// aa</span></span><br><span class="line"><span class="built_in">console</span>.log(f1.year);  <span class="comment">// 2018</span></span><br></pre></td></tr></table></figure>
+<p>以上代码中，如果函数作为构造函数用，那么其中的 this 就代表它即将 new 出来的对象。</p>
+<p>==以下有两个需要注意的地方==：</p>
+<p>1、情况1 仅限 Foo 函数作为构造函数的情况。==如果直接调用 Foo 函数==，而不是 new Foo()，情况就大不一样了(this 指向 Window)。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = <span class="string">"aa"</span>;</span><br><span class="line">  <span class="keyword">this</span>.year = <span class="number">2018</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);   <span class="comment">// Window &#123;postMessage: ƒ, blur: ƒ, ...</span></span><br><span class="line">&#125;</span><br><span class="line">Foo();</span><br></pre></td></tr></table></figure>
+<p>2、在构造函数的 prototype 中，this 指向的是构造的对象：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = <span class="string">"aa"</span>;</span><br><span class="line">  <span class="keyword">this</span>.year = <span class="number">2018</span>;</span><br><span class="line">&#125;</span><br><span class="line">Foo.prototype.getName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> f1 = <span class="keyword">new</span> Foo();</span><br><span class="line">f1.getName();    <span class="comment">// aa</span></span><br></pre></td></tr></table></figure>
+<p>其实，==不仅仅是构造函数的 prototype，即便是在整个原型链中，this 代表的也都是当前对象的值==。</p>
+<h2 id="情况2：函数作为对象的一个属性"><a href="#情况2：函数作为对象的一个属性" class="headerlink" title="情况2：函数作为对象的一个属性"></a>情况2：函数作为对象的一个属性</h2><p>如果函数作为对象的一个属性时，并且作为对象的一个属性被调用时，函数中的 this 指向该对象。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  x: <span class="number">10</span>,</span><br><span class="line">  fn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);    <span class="comment">// &#123;x: 10, fn: f&#125;</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.x);  <span class="comment">// 10</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">obj.fn();</span><br></pre></td></tr></table></figure>
+<p>以上代码中，fn 不仅作为一个对象的一个属性，而且的确是作为对象的一个属性被调用。结果 this 就是 obj 对象。</p>
+<p>==注意，如果fn函数不作为obj的一个属性被调用==，会是什么结果呢？</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  x: <span class="number">10</span>,</span><br><span class="line">  fn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);    <span class="comment">// Window &#123;postMessage: ƒ, blur: ƒ, ...</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.x);  <span class="comment">// undefined</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fn1 = obj.fn;</span><br><span class="line">fn1();</span><br></pre></td></tr></table></figure>
+<p>如上代码，如果 fn 函数被赋值到了另一个变量中，并没有作为 obj 的一个属性被调用，那么 this 的值就是 Window，this.x 为 undefined。</p>
+<h2 id="情况3：函数用-call-或者-apply-调用"><a href="#情况3：函数用-call-或者-apply-调用" class="headerlink" title="情况3：函数用 call 或者 apply 调用"></a>情况3：函数用 call 或者 apply 调用</h2><p>当一个函数被 call 和 apply 调用时，this 的值就取传入的对象的值。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  x: <span class="number">10</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);    <span class="comment">// &#123;x: 10&#125;</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.x);  <span class="comment">// 10</span></span><br><span class="line">&#125;</span><br><span class="line">fn.call(obj);</span><br></pre></td></tr></table></figure>
+<h2 id="情况4：全局-amp-调用普通函数"><a href="#情况4：全局-amp-调用普通函数" class="headerlink" title="情况4：全局 &amp; 调用普通函数"></a>情况4：全局 &amp; 调用普通函数</h2><p>这一部分代码都很好理解：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span> === <span class="built_in">window</span>);  <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">var</span> fn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);           <span class="comment">// Window &#123;postMessage: ƒ, blur: ƒ, ...</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.x);         <span class="comment">// 10</span></span><br><span class="line">&#125;</span><br><span class="line">fn();</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，==如果在对象内的函数属性中调用一个函数，这个被调用的函数属于调用普通函数==，而不属于情况2 ：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  x: <span class="number">10</span>,</span><br><span class="line">  fn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>);    <span class="comment">// Window &#123;postMessage: ƒ, blur: ƒ, ...</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.x);  <span class="comment">// undefined</span></span><br><span class="line">    &#125;</span><br><span class="line">    f();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">obj.fn();</span><br></pre></td></tr></table></figure>
+<h2 id="一个经典的-jQuery-源码案例"><a href="#一个经典的-jQuery-源码案例" class="headerlink" title="一个经典的 jQuery 源码案例"></a>一个经典的 jQuery 源码案例</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">jQuery.extend = jQuery.fn.extend = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// …… 此处省略若干行 ……</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// extend jQuery itself if only one argument is passed</span></span><br><span class="line">  <span class="keyword">if</span> (i === length) &#123;</span><br><span class="line">    target = <span class="keyword">this</span>;</span><br><span class="line">    i--;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// …… 此处省略若干行 ……</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>以上代码是从 jQuery 中摘除来的部分代码。jQuery.extend 和 jQuery.fn.extend 都指向了同一个函数，但是当执行时，函数中的 this 是不一样的。</p>
+<p>执行 jQuery.extend(…) 时，this 指向 jQuery；执行 jQuery.fn.extend(…) 时，this 指向 jQuery.fn。</p>
+<p>这样就巧妙的将一段代码同时共享给两个功能使用，更加符合设计原则。</p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2018/02/22/js-scope/" data-toggle="tooltip" data-placement="top"
+                           title="变量作用域和执行上下文">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#情况1：构造函数"><span class="toc-text">情况1：构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#情况2：函数作为对象的一个属性"><span class="toc-text">情况2：函数作为对象的一个属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#情况3：函数用-call-或者-apply-调用"><span class="toc-text">情况3：函数用 call 或者 apply 调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#情况4：全局-amp-调用普通函数"><span class="toc-text">情况4：全局 &amp; 调用普通函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一个经典的-jQuery-源码案例"><span class="toc-text">一个经典的 jQuery 源码案例</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#JavaScript"
+                           title="JavaScript">JavaScript</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/cttrevor">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/cttrevor">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Trevor 2018
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://cttrevor.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="imgs/head.png">
+</body>
+
+</html>

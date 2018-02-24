@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="崔彤的个人博客">
+    <meta name="keyword" content="">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="Trevor" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        变量作用域和执行上下文｜Trevor&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://cttrevor.github.io/2018/02/22/js-scope/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('//o7bkkhiex.bkt.clouddn.com/lion-blur-bg.jpg')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    Trevor
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/archives/">archives</a>
+                        </li>
+							
+						
+                    
+                        
+							
+                        <li>
+                            <a href="/categories/">categories</a>
+                        </li>
+							
+						
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">tags</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="http://m.qpic.cn/psb?/39bf0e7a-4728-4839-9dd6-65fdfc577179/hvr2xUgyxS*xDi3tWBHbqBWGxtWRESQYe1H6ZYhc3kw!/b/dGgBAAAAAAAA&bo=IAMgAyADIAMRGS4!&rf=viewer_4">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('http://m.qpic.cn/psb?/39bf0e7a-4728-4839-9dd6-65fdfc577179/hvr2xUgyxS*xDi3tWBHbqBWGxtWRESQYe1H6ZYhc3kw!/b/dGgBAAAAAAAA&bo=IAMgAyADIAMRGS4!&rf=viewer_4')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>变量作用域和执行上下文</h1>
+                    
+                    <h2 class="subheading">JavaScript基础知识系列</h2>
+                    
+                    <span class="meta">
+                         作者 Trevor Cui
+                        <span>
+                          日期 2018-02-22
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#JavaScript"
+                           title="JavaScript">JavaScript</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            变量作用域和执行上下文
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>参考自：<a href="http://www.cnblogs.com/wangfupeng1988/p/4001284.html" target="_blank" rel="noopener">深入理解javascript原型和闭包系列（王福朋 - 博客园）</a>。如有侵权，请联系删除。</p>
+<h2 id="变量作用域"><a href="#变量作用域" class="headerlink" title="变量作用域"></a>变量作用域</h2><p>JavaScript 变量的作用域无非就两种：全局变量和局部变量。</p>
+<p>每次定义一个函数，都会产生一个作用域链（scope chain）。当 JavaScript 寻找变量 varible 时（这个过程称为变量解析），总会优先在当前作用域链的第一个对象中查找属性 varible ，如果找到，则直接使用这个属性；否则，继续查找下一个对象的是否存在这个属性；这个过程会持续直至找到这个属性或者最终未找到引发错误为止。</p>
+<p>下面继续说作用域。作用域是一个很抽象的概念，类似于一个“地盘”：</p>
+<img src="/2018/02/22/js-scope/scope1.png">
+<p>如上图，全局代码和 fn、bar 两个函数都会形成一个作用域。而且，作用域有上下级的关系，上下级关系的确定就看函数是在哪个作用域下创建的。例如，fn 作用域下创建了 bar 函数，那么“ fn 作用域”就是“ bar 作用域”的上级。</p>
+<p>作用域最大的用处就是隔离变量，不同作用域下同名变量不会有冲突。例如以上代码中，三个作用域下都声明了“ a ”这个变量，但是他们不会有冲突。各自的作用域下，用各自的“ a ”。</p>
+<h2 id="执行上下文"><a href="#执行上下文" class="headerlink" title="执行上下文"></a>执行上下文</h2><p>先来看以下几段代码：</p>
+<p>1、<br><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(a);</span><br><span class="line"><span class="comment">// Uncaught ReferenceError: a is not defined</span></span><br></pre></td></tr></table></figure></p>
+<p>2、<br><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(a);</span><br><span class="line"><span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="comment">// 尽管对 a 的声明在 console 之后，console 的时候 a 是已定义的，但是不知道值为 10</span></span><br></pre></td></tr></table></figure></p>
+<p>3、<br><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line"><span class="comment">// Window &#123;postMessage: ƒ, blur: ƒ, ...</span></span><br></pre></td></tr></table></figure></p>
+<p>4、<br><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(f1);</span><br><span class="line"><span class="comment">// ƒ f1() &#123;&#125;</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>) </span>&#123;&#125;;  <span class="comment">// 函数声明</span></span><br></pre></td></tr></table></figure></p>
+<p>5、<br><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(f2);</span><br><span class="line"><span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> f2 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;;  <span class="comment">// 函数表达式</span></span><br></pre></td></tr></table></figure></p>
+<p>由以上几段代码，可以看出 JavaScript 的一些特点：在一段 js 代码真正运行之前，浏览器已经做了一些准备工作，具体工作主要有以下三点：</p>
+<p>1、变量、函数表达式——变量声明，默认赋值为undefined；</p>
+<p>2、this 赋值</p>
+<p>3、函数声明赋值</p>
+<p>这三种数据的准备情况我们称之为“==执行上下文==”或者“==执行上下文环境==”。给执行上下文环境下一个通俗的定义——在执行代码之前，把将要用到的所有的变量都事先拿出来，有的直接赋值了，有的先用 undefined 占个空。</p>
+<h2 id="函数体"><a href="#函数体" class="headerlink" title="函数体"></a>函数体</h2><p>再先看一段代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(a);  <span class="comment">// a 是自由变量</span></span><br><span class="line">&#125;                  <span class="comment">// 函数创建时，就确定了函数要取值的作用域</span></span><br><span class="line"></span><br><span class="line">a += <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params">f</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> a = <span class="number">20</span>;</span><br><span class="line">  f();             <span class="comment">// 打印 “50”，既不是 “20”，也不是 “10”</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a += <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">bar(fn);</span><br></pre></td></tr></table></figure>
+<p>从这里可以看出，函数每被调用一次，==都会产生一个新的执行上下文环境==。因为不同的调用可能就会有不同的参数。另外，函数在==定义的时候（不是调用的时候）==，==就已经确定了函数体内部自由变量的作用域==。</p>
+<p>==一定要切记的是，只有函数可以创造上下文环境，也只有函数可以创建作用域。==</p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2018/02/23/js-this/" data-toggle="tooltip" data-placement="top"
+                           title="this相关">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2018/02/09/stl-base/" data-toggle="tooltip" data-placement="top"
+                           title="STL基本操作小记">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#变量作用域"><span class="toc-text">变量作用域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#执行上下文"><span class="toc-text">执行上下文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数体"><span class="toc-text">函数体</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#JavaScript"
+                           title="JavaScript">JavaScript</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/cttrevor">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/cttrevor">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Trevor 2018
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://cttrevor.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="imgs/head.png">
+</body>
+
+</html>
