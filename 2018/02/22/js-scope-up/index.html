@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        变量作用域和执行上下文｜Trevor&#39;s blog
+        变量作用域和执行上下文（上）｜Trevor&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="https://cttrevor.github.io/2018/02/22/js-scope/">
+    <link rel="canonical" href="https://cttrevor.github.io/2018/02/22/js-scope-up/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -161,7 +161,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>变量作用域和执行上下文</h1>
+                    <h1>变量作用域和执行上下文（上）</h1>
                     
                     <h2 class="subheading">JavaScript基础知识系列</h2>
                     
@@ -183,7 +183,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            变量作用域和执行上下文
+            变量作用域和执行上下文（上）
         </span>
     </div>
 </header>
@@ -198,7 +198,7 @@
 <h2 id="变量作用域"><a href="#变量作用域" class="headerlink" title="变量作用域"></a>变量作用域</h2><p>JavaScript 变量的作用域无非就两种：全局变量和局部变量。</p>
 <p>每次定义一个函数，都会产生一个作用域链（scope chain）。当 JavaScript 寻找变量 varible 时（这个过程称为变量解析），总会优先在当前作用域链的第一个对象中查找属性 varible ，如果找到，则直接使用这个属性；否则，继续查找下一个对象的是否存在这个属性；这个过程会持续直至找到这个属性或者最终未找到引发错误为止。</p>
 <p>下面继续说作用域。作用域是一个很抽象的概念，类似于一个“地盘”：</p>
-<img src="/2018/02/22/js-scope/scope1.png">
+<img src="/2018/02/22/js-scope-up/scope1.png">
 <p>如上图，全局代码和 fn、bar 两个函数都会形成一个作用域。而且，作用域有上下级的关系，上下级关系的确定就看函数是在哪个作用域下创建的。例如，fn 作用域下创建了 bar 函数，那么“ fn 作用域”就是“ bar 作用域”的上级。</p>
 <p>作用域最大的用处就是隔离变量，不同作用域下同名变量不会有冲突。例如以上代码中，三个作用域下都声明了“ a ”这个变量，但是他们不会有冲突。各自的作用域下，用各自的“ a ”。</p>
 <h2 id="执行上下文"><a href="#执行上下文" class="headerlink" title="执行上下文"></a>执行上下文</h2><p>先来看以下几段代码：</p>
@@ -223,7 +223,7 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2018/02/23/js-this/" data-toggle="tooltip" data-placement="top"
+                        <a href="/2018/02/24/js-this/" data-toggle="tooltip" data-placement="top"
                            title="this相关">&larr; Previous Post</a>
                     </li>
                     
