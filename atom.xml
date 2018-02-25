@@ -42,6 +42,31 @@
   </entry>
   
   <entry>
+    <title>变量作用域和执行上下文(下)</title>
+    <link href="https://cttrevor.github.io/2018/02/23/js-scope-down/"/>
+    <id>https://cttrevor.github.io/2018/02/23/js-scope-down/</id>
+    <published>2018-02-22T16:00:00.000Z</published>
+    <updated>2018-02-25T09:25:21.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>参考自：<a href="http://www.cnblogs.com/wangfupeng1988/p/4001284.html" target="_blank" rel="noopener">深入理解javascript原型和闭包系列（王福朋 - 博客园）</a>。如有侵权，请联系删除。</p><h2 id="自由变量-和-作用域链"><a href="#自由变量-和-作用域链" class="headerlink" title="自由变量 和 作用域链"></a>自由变量 和 作用域链</h2><p>先解释一下什么是“自由变量”。</p><p>在A作用域中使用的变量 x，却没有在 A 作用域中声明（即在其他作用域中声明的），对于 A 作用域来说，x就是一个自由变量：</p><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> b = <span class="number">20</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(a + b);  <span class="comment">// 这里 a 就是一个自由变量</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>在上面的程序中，在调用 fn() 函数时，函数体中第 6 行。取 b 的值就直接可以在 fn 作用域中取，因为 b 就是在这里定义的。而取 a 的值时，就需要到另一个作用域中取。</p><p>问题在于去哪取？<strong>有人说过要到父作用域中取，其实有时候这种解释会产生歧义</strong>。实际上准确的说法应该是：<strong>要到创建这个函数的那个作用域中取值——是“创建”，而不是“调用”</strong>——其实这就是所谓的“静态作用域”。例如：</p><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;   <span class="comment">// 函数创建的地方</span></span><br><span class="line">  <span class="built_in">console</span>.log(x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">show</span>(<span class="params">f</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> x = <span class="number">20</span>;</span><br><span class="line">  (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    f();          <span class="comment">// 打印10，而不是20</span></span><br><span class="line">  &#125;)();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">show(fn);</span><br></pre></td></tr></table></figure><p>在这段代码中，fn 函数取自由变量 x 的值时，要到哪个作用域中取？——要到创建 fn 函数的那个作用域中取——无论 fn 函数将在哪里调用。</p><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> b = <span class="number">20</span>;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(a + b);   <span class="comment">// a = 10, b = 40, 故打印 50</span></span><br><span class="line">  &#125;</span><br><span class="line">  b += <span class="number">20</span>;</span><br><span class="line">  <span class="keyword">return</span> bar;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x = fn(), b = <span class="number">200</span>;</span><br><span class="line">x();</span><br></pre></td></tr></table></figure><p>第二例也一样，bar 函数中 a 和 b 都是自由变量，其中 b 在创建 bar 的 fn 作用域中找到了，值为 40（因为 <code>return bar</code> 时 b 已经执行了 <code>+= 20</code>，若在 <code>+= 20</code> 前调用 <code>bar();</code>，b 的值为20）；而 a 在 fn 作用域中仍找不到，故再在创建 fn 函数的作用域，即全局作用域中找到 a。</p><h2 id="上下文环境-和-作用域-的关系"><a href="#上下文环境-和-作用域-的关系" class="headerlink" title="上下文环境 和 作用域 的关系"></a>上下文环境 和 作用域 的关系</h2><h3 id="上下文环境"><a href="#上下文环境" class="headerlink" title="上下文环境"></a>上下文环境</h3><p>可以理解为一个看不见摸不着的对象（有若干个属性），虽然看不见摸不着，但确实实实在在存在的，因为所有的变量都在里面存储着，要不然咱们定义的变量在哪里存？</p><p>另外，<strong>对于函数来说，上下文环境是在调用时创建的，这个很好理解。拿参数做例子，你不调用函数，我哪儿知道你要给我传什么参数？</strong></p><h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><p>首先，它很抽象。第二，记住一句话：除了全局作用域，<strong>只有函数才能创建作用域。创建一个函数就创建了一个作用域，无论你调用不调用</strong>，函数只要创建了，它就有独立的作用域，就有自己的一个“地盘”。</p><h3 id="两者"><a href="#两者" class="headerlink" title="两者"></a>两者</h3><p>一个作用域下可能包含若干个上下文环境。有可能从来没有过上下文环境（函数从来就没有被调用过）；有可能有过，现在函数被调用完毕后，上下文环境被销毁了；有可能同时存在一个或多个（闭包）。</p><p>最后饮用一张图片来结尾吧：</p><img src="/2018/02/23/js-scope-down/scope2.png">]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;参考自：&lt;a href=&quot;http://www.cnblogs.com/wangfupeng1988/p/4001284.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;深入理解javascript原型和闭包系列（王福朋 - 博客园）&lt;/a&gt;。如有
+      
+    
+    </summary>
+    
+      <category term="Frontend" scheme="https://cttrevor.github.io/categories/Frontend/"/>
+    
+    
+      <category term="JavaScript" scheme="https://cttrevor.github.io/tags/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
     <title>变量作用域和执行上下文（上）</title>
     <link href="https://cttrevor.github.io/2018/02/22/js-scope-up/"/>
     <id>https://cttrevor.github.io/2018/02/22/js-scope-up/</id>
